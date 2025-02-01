@@ -4,8 +4,8 @@ version: 0.0.1
 homepage: https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter
 
 environment:
-  sdk: ^3.7.0-323.1.beta
-  flutter: ">=1.17.0"
+  sdk: ">=3.4.3 <4.0.0"
+  flutter: ">=1.20.0"
 
 dependencies:
   flutter:
