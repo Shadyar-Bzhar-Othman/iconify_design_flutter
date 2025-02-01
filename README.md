@@ -1,39 +1,92 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Iconify Design Flutter 🚀
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+`iconify_design_flutter` is a Flutter package that fetches and displays SVG icons from [Iconify](https://icon-sets.iconify.design). It caches icons locally after the first fetch, making subsequent loads instant.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+---
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## 📌 Features
 
-## Features
+✔️ Fetches SVG icons dynamically from Iconify.
+✔️ Caches icons locally for faster future loads.
+✔️ Supports custom size and color.
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+---
 
-## Getting started
+## 📦 Installation
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add the package to your `pubspec.yaml`:
 
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  iconify_design_flutter: 0.0.1
 ```
 
-## Additional information
+Run:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```sh
+flutter pub get
+```
+
+---
+
+## 🚀 Usage
+
+Import the package:
+
+```dart
+import 'package:iconify_design_flutter/iconify_design_flutter.dart';
+```
+
+Use the `IconifyIcon` widget:
+
+```dart
+IconifyIcon(
+  icon: "mdi:home",
+  color: Colors.black,
+  size: 32,
+)
+```
+
+---
+
+## ⚙️ How It Works
+
+1️⃣ Extracts the prefix and icon name from the provided string (e.g., `"mdi:home"`).
+2️⃣ Checks if the icon is already cached locally.
+3️⃣ If not cached, fetches the SVG from Iconify and stores it.
+4️⃣ On subsequent renders, loads the cached icon instead of fetching it again.
+
+---
+
+## 🔗 Dependencies
+
+- **[`dio`](https://pub.dev/packages/dio)** – For making HTTP requests to fetch icons.
+- **[`flutter_svg`](https://pub.dev/packages/flutter_svg)** – For rendering SVG icons.
+- **[`shared_preferences`](https://pub.dev/packages/shared_preferences)** – For local caching.
+- **[`fpdart`](https://pub.dev/packages/fpdart)** – For functional programming utilities.
+
+---
+
+## 🔗 Links
+
+- 📦 [Source Code](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter)
+- 🌍 [Website](https://shadyarbzharothman.com)
+
+---
+
+## 🤝 Contribution
+
+We welcome contributions! You can:
+
+- Report issues via [GitHub Issues](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter/issues).
+- Submit a pull request if you'd like to improve the package.
+
+---
+
+## 🐜 License
+
+This project is licensed under the **MIT License** – see the [LICENSE](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter/blob/main/LICENSE) file for details.
+
+---
+
+If you appreciate my work, please don't forget to ⭐ star the repo to show your support!
