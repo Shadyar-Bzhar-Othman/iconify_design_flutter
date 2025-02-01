@@ -1,6 +1,6 @@
 # Iconify Design Flutter 🚀
 
-`iconify_design_flutter` is a Flutter package that fetches and displays SVG icons from [Iconify](https://icon-sets.iconify.design). It caches icons locally after the first fetch, making subsequent loads instant.
+`iconify_design_flutter` is a Flutter package that allows you to use icons from [Iconify](https://icon-sets.iconify.design). It caches icons locally after the first fetch, making subsequent loads instant.
 
 ---
 
@@ -51,10 +51,10 @@ IconifyIcon(
 
 ## ⚙️ How It Works
 
-1️⃣ Extracts the prefix and icon name from the provided string (e.g., `"mdi:home"`).
-2️⃣ Checks if the icon is already cached locally.
-3️⃣ If not cached, fetches the SVG from Iconify and stores it.
-4️⃣ On subsequent renders, loads the cached icon instead of fetching it again.
+- Extracts the prefix and icon name from the provided string (e.g., `"mdi:home"`).
+- Checks if the icon is already cached locally.
+- If not cached, fetches the SVG from Iconify and stores it.
+- On subsequent renders, loads the cached icon instead of fetching it again.
 
 ---
 
