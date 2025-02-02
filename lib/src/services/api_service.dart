@@ -11,10 +11,12 @@ class APIService {
     ),
   );
 
+  // Method to set Dio instance for testing
   static void setDioForTesting(Dio dio) {
     _dio = dio;
   }
 
+  // Method to make GET requests to fetch icon form iconify API
   static Future<Either<DioException, Response>> getRequest(
     String endpoint,
   ) async {

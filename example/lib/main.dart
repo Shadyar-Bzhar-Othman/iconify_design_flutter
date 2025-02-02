@@ -11,10 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Iconify Design',
+      title: 'Iconify Design Fluter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurpleAccent,
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
       ),
       home: const TestScreen(),
@@ -31,155 +34,178 @@ class TestScreen extends StatefulWidget {
 
 class _TestScreenState extends State<TestScreen> {
   final validIcons = [
-    "logos:flutter",
-    "skill-icons:flutter-light",
-    "skill-icons:flutter-dark",
-    "logos:facebook",
-    "line-md:facebook",
-    "line-md:instagram",
-    "skill-icons:instagram",
-    "hugeicons:tiktok",
-    "logos:reddit-icon",
-    "icon-park-solid:one",
-    "fluent:home-24-filled",
-    "mage:phone-fill",
-    "ic:twotone-computer",
-    "material-symbols:hotel-class-rounded",
+    "material-symbols:home-rounded",
+    "material-symbols:settings-outline",
+    "material-symbols:search",
+    "material-symbols:favorite",
+    "material-symbols:notifications",
+    "material-symbols:share",
+    "material-symbols:delete",
+    "material-symbols:edit",
+    "material-symbols:arrow-forward",
+    "material-symbols:download",
+    "material-symbols:mail",
+    "material-symbols:phone",
+    "material-symbols:info",
+    "material-symbols:warning",
   ];
 
-  final invalidIcons = ["thisisanicon", "crossicon", "whatisicon", "iconify"];
+  final invalidIcons = ["invalid-icon-1", "invalid-icon-2", "invalid-icon-3"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Iconify design for flutter demo',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.grey.shade800,
+        title: const Text('Iconify Design Fluter Demo'),
         centerTitle: true,
+        elevation: 2,
       ),
-      backgroundColor: Colors.grey.shade900,
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Valid icons :", style: TextStyle(color: Colors.white)),
+            _buildSectionTitle('Icon Gallery'),
             const SizedBox(height: 16),
-            Center(
-              child: GridView.count(
-                crossAxisCount: 8,
-                shrinkWrap: true,
-                mainAxisSpacing: 28.0,
-                crossAxisSpacing: 28.0,
-                childAspectRatio: 2,
-                children:
-                    validIcons.map((icon) => IconifyIcon(icon: icon)).toList(),
-              ),
-            ),
+            _buildIconGrid(validIcons),
             const SizedBox(height: 32),
-            const Text(
-              "Invalid icons : (There is no output in that case)",
-              style: TextStyle(color: Colors.white),
-            ),
-            Center(
-              child: GridView.count(
-                crossAxisCount: 8,
-                shrinkWrap: true,
-                mainAxisSpacing: 28.0,
-                crossAxisSpacing: 28.0,
-                childAspectRatio: 2,
-                children:
-                    invalidIcons
-                        .map((icon) => IconifyIcon(icon: icon))
-                        .toList(),
-              ),
-            ),
-            const SizedBox(height: 32),
-            const Text(
-              "Change icon color & width",
-              style: TextStyle(color: Colors.white),
-            ),
+            _buildSectionTitle('Invalid Icons'),
             const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade800,
-                    borderRadius: BorderRadius.circular(16.0),
-                    border: Border.all(width: 1, color: Colors.white),
-                  ),
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Column(
-                    children: [
-                      IconifyIcon(icon: "material-symbols:10k", size: 128),
-                      Text(
-                        "Size scaled to 128.0",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade800,
-                    borderRadius: BorderRadius.circular(16.0),
-                    border: Border.all(width: 1, color: Colors.white),
-                  ),
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Column(
-                    children: [
-                      IconifyIcon(
-                        icon: "iconoir:fill-color-solid",
-                        color: Colors.yellow,
-                      ),
-                      Text(
-                        "Color changed to yellow",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            _buildIconGrid(invalidIcons),
             const SizedBox(height: 32),
-            const Text(
-              "Usage with buttons",
-              style: TextStyle(color: Colors.white),
-            ),
+            _buildSectionTitle('Customization Examples'),
             const SizedBox(height: 16),
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.start,
-              children: [
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey.shade700,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: () {},
-                  icon: const IconifyIcon(
-                    icon: "mdi:refresh",
-                    color: Colors.white,
-                  ),
-                  label: const Text("Reload"),
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey.shade700,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(32, 32),
-                    maximumSize: const Size(32, 32),
-                  ),
-                  onPressed: () {},
-                  icon: const IconifyIcon(icon: "mdi:home", color: Colors.red),
-                ),
-              ],
+            _buildCustomizationExamples(),
+            const SizedBox(height: 32),
+            _buildSectionTitle('Button Integration'),
+            const SizedBox(height: 16),
+            _buildButtonExamples(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String text) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: Colors.grey.shade800,
+      ),
+    );
+  }
+
+  Widget _buildIconGrid(List<String> icons) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 6,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: 1,
+      ),
+      itemCount: icons.length,
+      itemBuilder:
+          (context, index) => Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(12),
             ),
+            padding: const EdgeInsets.all(12),
+            child: IconifyIcon(
+              icon: icons[index],
+              color: Colors.grey.shade800,
+              size: 32,
+            ),
+          ),
+    );
+  }
+
+  Widget _buildCustomizationExamples() {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ExampleCard(
+          icon: "material-symbols:palette-outline",
+          size: 64,
+          color: Colors.blue,
+          label: 'Custom Color',
+        ),
+        ExampleCard(
+          icon: "material-symbols:format-size",
+          size: 76,
+          label: 'Large Size',
+        ),
+        ExampleCard(
+          icon: "material-symbols:gradient",
+          size: 64,
+          color: Colors.purple,
+          label: 'Different Style',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildButtonExamples() {
+    return Wrap(
+      spacing: 16,
+      runSpacing: 16,
+      alignment: WrapAlignment.center,
+      children: [
+        FilledButton.icon(
+          icon: const IconifyIcon(icon: "material-symbols:download", size: 20),
+          label: const Text('Download'),
+          onPressed: () {},
+        ),
+        FilledButton.tonalIcon(
+          icon: const IconifyIcon(icon: "material-symbols:share", size: 20),
+          label: const Text('Share'),
+          onPressed: () {},
+        ),
+        IconButton.filled(
+          icon: const IconifyIcon(icon: "material-symbols:favorite"),
+          onPressed: () {},
+        ),
+        IconButton.filledTonal(
+          icon: const IconifyIcon(icon: "material-symbols:settings"),
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
+}
+
+class ExampleCard extends StatelessWidget {
+  final String icon;
+  final double size;
+  final Color? color;
+  final String label;
+
+  const ExampleCard({
+    super.key,
+    required this.icon,
+    required this.size,
+    this.color,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            IconifyIcon(
+              icon: icon,
+              size: size,
+              color: color ?? Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 8),
+            Text(label, style: Theme.of(context).textTheme.labelMedium),
           ],
         ),
       ),

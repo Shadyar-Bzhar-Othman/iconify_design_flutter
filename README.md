@@ -18,7 +18,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  iconify_design_flutter: 0.0.1
+  iconify_design_flutter: ^1.0.0
 ```
 
 Run:

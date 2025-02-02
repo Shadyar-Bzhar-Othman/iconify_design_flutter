@@ -23,15 +23,18 @@ class _IconifyIconState extends State<IconifyIcon> {
   Future<String?> getIcon() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    // Check if the icon is already cached
     if (prefs.containsKey('icon:${widget.icon}')) {
       return prefs.getString('icon:${widget.icon}');
     }
 
+    // Split the icon string to get prefix and icon name
     final parts = widget.icon.split(":");
     if (parts.length != 2) throw ArgumentError("Invalid icon format");
     final prefix = parts[0];
     final icon = parts[1];
 
+    // Fetch the icon from the API
     final response = await APIService.getRequest('$prefix/$icon.svg');
 
     return await response.fold(
@@ -39,6 +42,7 @@ class _IconifyIconState extends State<IconifyIcon> {
         return null;
       },
       (r) async {
+        // Cache the fetched icon
         await prefs.setString('icon:${widget.icon}', r.data);
         return r.data;
       },
@@ -53,6 +57,7 @@ class _IconifyIconState extends State<IconifyIcon> {
         switch (snapshot.connectionState) {
           case ConnectionState.active:
           case ConnectionState.waiting:
+            // Show a loading indicator while fetching the icon
             return Container(
               width: widget.size,
               padding: const EdgeInsets.all(2.0),
@@ -71,6 +76,7 @@ class _IconifyIconState extends State<IconifyIcon> {
               return const SizedBox.shrink();
             }
 
+            // Display the fetched SVG icon
             return SvgPicture.string(
               snapshot.data!,
               width: widget.size,
