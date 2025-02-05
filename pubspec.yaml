@@ -1,6 +1,6 @@
 name: iconify_design_flutter
 description: "A Flutter package that allows you to use icons from the Iconify.design API with ease."
-version: 1.0.0
+version: 1.0.2
 homepage: https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter
 
 environment:

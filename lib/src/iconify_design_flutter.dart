@@ -20,6 +20,14 @@ class IconifyIcon extends StatefulWidget {
 }
 
 class _IconifyIconState extends State<IconifyIcon> {
+  late Future<String?> _iconFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _iconFuture = getIcon();
+  }
+
   Future<String?> getIcon() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -52,7 +60,7 @@ class _IconifyIconState extends State<IconifyIcon> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String?>(
-      future: getIcon(),
+      future: _iconFuture,
       builder: (_, AsyncSnapshot<String?> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active:

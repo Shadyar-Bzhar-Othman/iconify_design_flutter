@@ -6,9 +6,9 @@
 
 ## 📌 Features
 
-✔️ Fetches SVG icons dynamically from Iconify.
-✔️ Caches icons locally for faster future loads.
-✔️ Supports custom size and color.
+- Fetches SVG icons dynamically from Iconify.
+- Caches icons locally for faster future loads.
+- Supports custom size and color.
 
 ---
 
@@ -18,7 +18,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  iconify_design_flutter: ^1.0.0
+  iconify_design_flutter: ^1.0.2
 ```
 
 Run:
