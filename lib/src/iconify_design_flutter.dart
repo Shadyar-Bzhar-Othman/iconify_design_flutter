@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:iconify_design_flutter/src/services/api_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:iconify_design_flutter/src/services/icon_service.dart';
+
+export 'package:iconify_design_flutter/src/services/icon_service.dart'
+    show IconService;
 
 class IconifyIcon extends StatefulWidget {
+  /// Iconify id in `prefix:name` form, e.g. `"mdi:home"`.
   final String icon;
+
+  /// Icon size. Defaults to [IconThemeData.size], then `24`.
   final double? size;
+
+  /// Icon color. Defaults to [IconThemeData.color], then black.
   final Color? color;
+
+  /// Optional accessibility label.
+  final String? semanticsLabel;
+
+  /// Shown while the SVG is loading. Defaults to an empty sized box.
+  final Widget? placeholder;
 
   const IconifyIcon({
     super.key,
     required this.icon,
-    this.size = 24,
-    this.color = Colors.black,
+    this.size,
+    this.color,
+    this.semanticsLabel,
+    this.placeholder,
   });
 
   @override
@@ -25,71 +40,44 @@ class _IconifyIconState extends State<IconifyIcon> {
   @override
   void initState() {
     super.initState();
-    _iconFuture = getIcon();
+    _iconFuture = IconService.getIcon(widget.icon);
   }
 
-  Future<String?> getIcon() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Check if the icon is already cached
-    if (prefs.containsKey('icon:${widget.icon}')) {
-      return prefs.getString('icon:${widget.icon}');
+  @override
+  void didUpdateWidget(covariant IconifyIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.icon != widget.icon) {
+      _iconFuture = IconService.getIcon(widget.icon);
     }
-
-    // Split the icon string to get prefix and icon name
-    final parts = widget.icon.split(":");
-    if (parts.length != 2) throw ArgumentError("Invalid icon format");
-    final prefix = parts[0];
-    final icon = parts[1];
-
-    // Fetch the icon from the API
-    final response = await APIService.getRequest('$prefix/$icon.svg');
-
-    return await response.fold(
-      (l) {
-        return null;
-      },
-      (r) async {
-        // Cache the fetched icon
-        await prefs.setString('icon:${widget.icon}', r.data);
-        return r.data;
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final iconTheme = IconTheme.of(context);
+    final size = widget.size ?? iconTheme.size ?? 24.0;
+    final color = widget.color ?? iconTheme.color ?? Colors.black;
+
     return FutureBuilder<String?>(
       future: _iconFuture,
       builder: (_, AsyncSnapshot<String?> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active:
           case ConnectionState.waiting:
-            // Show a loading indicator while fetching the icon
-            return Container(
-              width: widget.size,
-              padding: const EdgeInsets.all(2.0),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: CircularProgressIndicator(
-                  color: widget.color,
-                  strokeWidth: 1,
-                ),
-              ),
-            );
+            return widget.placeholder ?? SizedBox(width: size, height: size);
           case ConnectionState.none:
-            return const SizedBox.shrink();
+            return SizedBox(width: size, height: size);
           case ConnectionState.done:
-            if (snapshot.data == null) {
-              return const SizedBox.shrink();
+            final data = snapshot.data;
+            if (data == null) {
+              return SizedBox(width: size, height: size);
             }
 
-            // Display the fetched SVG icon
             return SvgPicture.string(
-              snapshot.data!,
-              width: widget.size,
-              height: widget.size,
-              theme: SvgTheme(currentColor: widget.color!),
+              data,
+              width: size,
+              height: size,
+              theme: SvgTheme(currentColor: color),
+              semanticsLabel: widget.semanticsLabel,
             );
         }
       },

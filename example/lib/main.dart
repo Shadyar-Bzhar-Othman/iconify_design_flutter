@@ -33,6 +33,8 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
+  bool isFavorite = false;
+
   final validIcons = [
     "material-symbols:home-rounded",
     "material-symbols:settings-outline",
@@ -65,6 +67,26 @@ class _TestScreenState extends State<TestScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildSectionTitle('Runtime Icon Swap'),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                IconifyIcon(
+                  icon: isFavorite
+                      ? "material-symbols:favorite"
+                      : "material-symbols:favorite-outline",
+                  color: Colors.red,
+                  size: 40,
+                  semanticsLabel: isFavorite ? 'Favorited' : 'Not favorited',
+                ),
+                const SizedBox(width: 16),
+                FilledButton(
+                  onPressed: () => setState(() => isFavorite = !isFavorite),
+                  child: Text(isFavorite ? 'Unfavorite' : 'Favorite'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
             _buildSectionTitle('Icon Gallery'),
             const SizedBox(height: 16),
             _buildIconGrid(validIcons),

@@ -1,24 +1,26 @@
-# Iconify Design Flutter 🚀
+# Iconify Design Flutter
 
-`iconify_design_flutter` is a Flutter package that allows you to use icons from [Iconify](https://icon-sets.iconify.design). It caches icons locally after the first fetch, making subsequent loads instant.
-
----
-
-## 📌 Features
-
-- Fetches SVG icons dynamically from Iconify.
-- Caches icons locally for faster future loads.
-- Supports custom size and color.
+`iconify_design_flutter` lets you use icons from [Iconify](https://icon-sets.iconify.design) in Flutter. Icons are fetched once, cached in memory and on disk, then reused.
 
 ---
 
-## 📦 Installation
+## Features
+
+- Fetch SVG icons from Iconify by id (`prefix:name`)
+- Memory + disk cache, with in-flight request dedupe
+- Updates when `icon` changes at runtime
+- Respects `IconTheme` for default color/size
+- Optional accessibility label and loading placeholder
+
+---
+
+## Installation
 
 Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  iconify_design_flutter: ^1.0.2
+  iconify_design_flutter: ^1.0.3
 ```
 
 Run:
@@ -29,64 +31,81 @@ flutter pub get
 
 ---
 
-## 🚀 Usage
-
-Import the package:
+## Usage
 
 ```dart
 import 'package:iconify_design_flutter/iconify_design_flutter.dart';
-```
 
-Use the `IconifyIcon` widget:
-
-```dart
 IconifyIcon(
   icon: "mdi:home",
   color: Colors.black,
   size: 32,
+  semanticsLabel: 'Home',
 )
+```
+
+Runtime icon changes work without restarting the app:
+
+```dart
+IconifyIcon(
+  icon: isFavorite ? "mdi:heart" : "mdi:heart-outline",
+)
+```
+
+Optional loading placeholder:
+
+```dart
+IconifyIcon(
+  icon: "mdi:home",
+  placeholder: SizedBox(
+    width: 24,
+    height: 24,
+    child: CircularProgressIndicator(strokeWidth: 1),
+  ),
+)
+```
+
+Clear caches if needed:
+
+```dart
+IconService.clearMemoryCache();
+await IconService.clearAllCaches();
 ```
 
 ---
 
-## ⚙️ How It Works
+## How it works
 
-- Extracts the prefix and icon name from the provided string (e.g., `"mdi:home"`).
-- Checks if the icon is already cached locally.
-- If not cached, fetches the SVG from Iconify and stores it.
-- On subsequent renders, loads the cached icon instead of fetching it again.
-
----
-
-## 🔗 Dependencies
-
-- **[`dio`](https://pub.dev/packages/dio)** – For making HTTP requests to fetch icons.
-- **[`flutter_svg`](https://pub.dev/packages/flutter_svg)** – For rendering SVG icons.
-- **[`shared_preferences`](https://pub.dev/packages/shared_preferences)** – For local caching.
-- **[`fpdart`](https://pub.dev/packages/fpdart)** – For functional programming utilities.
+1. Validates `prefix:name`
+2. Returns from memory cache when available
+3. Otherwise checks SharedPreferences
+4. Otherwise fetches from Iconify and stores in memory + disk
+5. Concurrent requests for the same icon share one network call
 
 ---
 
-## 🔗 Links
+## Dependencies
 
-- 📦 [Source Code](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter)
-- 🌍 [Website](https://shadyarbzharothman.com)
-
----
-
-## 🤝 Contribution
-
-We welcome contributions! You can:
-
-- Report issues via [GitHub Issues](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter/issues).
-- Submit a pull request if you'd like to improve the package.
+- [`dio`](https://pub.dev/packages/dio) – HTTP
+- [`flutter_svg`](https://pub.dev/packages/flutter_svg) – SVG rendering
+- [`shared_preferences`](https://pub.dev/packages/shared_preferences) – disk cache
 
 ---
 
-## 🐜 License
+## Links
 
-This project is licensed under the **MIT License** – see the [LICENSE](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter/blob/main/LICENSE) file for details.
+- [Source Code](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter)
+- [Website](https://shadyarbzharothman.com)
 
 ---
 
-If you appreciate my work, please don't forget to ⭐ star the repo to show your support!
+## Contribution
+
+- Report issues via [GitHub Issues](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter/issues)
+- Pull requests welcome
+
+---
+
+## License
+
+MIT – see [LICENSE](https://github.com/Shadyar-Bzhar-Othman/iconify_design_flutter/blob/main/LICENSE)
