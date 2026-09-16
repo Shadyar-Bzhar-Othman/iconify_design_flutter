@@ -15,6 +15,12 @@ class IconifyIcon extends StatefulWidget {
   /// Icon color. Defaults to [IconThemeData.color], then black.
   final Color? color;
 
+  /// Stroke thickness for outline icons (boldness).
+  ///
+  /// Only affects icons that use SVG `stroke-width` (e.g. Tabler, Lucide).
+  /// Filled icons are unchanged. Typical values are around `1`–`2.5`.
+  final double? strokeWidth;
+
   /// Optional accessibility label.
   final String? semanticsLabel;
 
@@ -26,6 +32,7 @@ class IconifyIcon extends StatefulWidget {
     required this.icon,
     this.size,
     this.color,
+    this.strokeWidth,
     this.semanticsLabel,
     this.placeholder,
   });
@@ -72,8 +79,12 @@ class _IconifyIconState extends State<IconifyIcon> {
               return SizedBox(width: size, height: size);
             }
 
+            final svg = widget.strokeWidth == null
+                ? data
+                : applyStrokeWidth(data, widget.strokeWidth!);
+
             return SvgPicture.string(
-              data,
+              svg,
               width: size,
               height: size,
               theme: SvgTheme(currentColor: color),
@@ -83,4 +94,26 @@ class _IconifyIconState extends State<IconifyIcon> {
       },
     );
   }
+}
+
+/// Rewrites `stroke-width` in [svg] so outline icons render thicker/thinner.
+@visibleForTesting
+String applyStrokeWidth(String svg, double strokeWidth) {
+  final value = _formatStrokeWidth(strokeWidth);
+  var result = svg.replaceAllMapped(
+    RegExp(r'''stroke-width\s*=\s*(["'])[^"']*\1'''),
+    (match) => 'stroke-width=${match[1]}$value${match[1]}',
+  );
+  result = result.replaceAllMapped(
+    RegExp(r'stroke-width\s*:\s*[^;}"]+'),
+    (_) => 'stroke-width:$value',
+  );
+  return result;
+}
+
+String _formatStrokeWidth(double value) {
+  if (value == value.roundToDouble()) {
+    return value.toInt().toString();
+  }
+  return value.toString();
 }

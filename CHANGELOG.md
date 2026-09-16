@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Add optional `strokeWidth` to control outline icon boldness
+
 ## 1.0.3
 
 - Fix icons not updating when `icon` changes at runtime or on hot reload

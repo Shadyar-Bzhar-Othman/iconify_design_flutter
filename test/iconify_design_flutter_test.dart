@@ -223,5 +223,52 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(IconifyIcon), findsOneWidget);
     });
+
+    testWidgets('applies strokeWidth to outline icons', (tester) async {
+      interceptor.responses['tabler/home.svg'] =
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">'
+          '<g fill="none" stroke="currentColor" stroke-width="2">'
+          '<path d="M5 12H3l9-9l9 9h-2"/></g></svg>';
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: IconifyIcon(
+              icon: 'tabler:home',
+              size: 32,
+              strokeWidth: 1.5,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      expect(find.byType(IconifyIcon), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('applyStrokeWidth', () {
+    test('replaces stroke-width attributes', () {
+      const svg =
+          '<g stroke-width="2"><path stroke-width=\'2\' d="M0 0"/></g>';
+      expect(
+        applyStrokeWidth(svg, 1.5),
+        '<g stroke-width="1.5"><path stroke-width=\'1.5\' d="M0 0"/></g>',
+      );
+    });
+
+    test('replaces stroke-width in style strings', () {
+      const svg = '<path style="stroke-width:2;fill:none"/>';
+      expect(
+        applyStrokeWidth(svg, 1),
+        '<path style="stroke-width:1;fill:none"/>',
+      );
+    });
+
+    test('leaves filled icons without stroke-width unchanged', () {
+      const svg = '<path fill="currentColor" d="M0 0h24v24H0z"/>';
+      expect(applyStrokeWidth(svg, 2), svg);
+    });
   });
 }

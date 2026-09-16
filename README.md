@@ -10,6 +10,7 @@
 - Memory + disk cache, with in-flight request dedupe
 - Updates when `icon` changes at runtime
 - Respects `IconTheme` for default color/size
+- Optional `strokeWidth` for outline icon boldness (Tabler, Lucide, etc.)
 - Optional accessibility label and loading placeholder
 
 ---
@@ -20,7 +21,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  iconify_design_flutter: ^1.0.3
+  iconify_design_flutter: ^1.0.4
 ```
 
 Run:
@@ -41,6 +42,16 @@ IconifyIcon(
   color: Colors.black,
   size: 32,
   semanticsLabel: 'Home',
+)
+```
+
+For outline icons, use `strokeWidth` to control boldness (typical range `1`–`2.5`):
+
+```dart
+IconifyIcon(
+  icon: "tabler:home",
+  size: 32,
+  strokeWidth: 1.5,
 )
 ```
 

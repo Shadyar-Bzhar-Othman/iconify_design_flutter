@@ -146,8 +146,10 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   Widget _buildCustomizationExamples() {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return const Wrap(
+      spacing: 16,
+      runSpacing: 16,
+      alignment: WrapAlignment.spaceEvenly,
       children: [
         ExampleCard(
           icon: "material-symbols:palette-outline",
@@ -161,10 +163,16 @@ class _TestScreenState extends State<TestScreen> {
           label: 'Large Size',
         ),
         ExampleCard(
-          icon: "material-symbols:gradient",
+          icon: "tabler:home",
           size: 64,
-          color: Colors.purple,
-          label: 'Different Style',
+          strokeWidth: 1,
+          label: 'Thin Stroke',
+        ),
+        ExampleCard(
+          icon: "tabler:home",
+          size: 64,
+          strokeWidth: 2.5,
+          label: 'Bold Stroke',
         ),
       ],
     );
@@ -202,6 +210,7 @@ class _TestScreenState extends State<TestScreen> {
 class ExampleCard extends StatelessWidget {
   final String icon;
   final double size;
+  final double? strokeWidth;
   final Color? color;
   final String label;
 
@@ -209,6 +218,7 @@ class ExampleCard extends StatelessWidget {
     super.key,
     required this.icon,
     required this.size,
+    this.strokeWidth,
     this.color,
     required this.label,
   });
@@ -224,6 +234,7 @@ class ExampleCard extends StatelessWidget {
             IconifyIcon(
               icon: icon,
               size: size,
+              strokeWidth: strokeWidth,
               color: color ?? Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(height: 8),
